@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Комментарий с рейтингом</title>
+    <script src="https://kit.fontawesome.com/21e61ebe92.js" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin-bottom: 5px;
+        }
+
+        .image {
+            width: 300px;
+            height: 200px;
+        }
+
+        .star {
+            color: rgb(216, 214, 214);
+        }
+
+        .active {
+            color: yellow;
+        }
+
+        .error {
+            border: 1px solid red;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <form class="form">
+        <div>
+            <img class="image"
+                src="https://avatars.dzeninfra.ru/get-zen_doc/1860621/pub_5d4d1705e854a900ae068cd6_5d4d176f86c4a900adce0706/scale_1200"
+                alt="cafe">
+        </div>
+        <div class="fieldRating">
+            <span class="star"><i class="fa-solid fa-star"></i></span>
+            <span class="star"><i class="fa-solid fa-star"></i></span>
+            <span class="star"><i class="fa-solid fa-star"></i></span>
+            <span class="star"><i class="fa-solid fa-star"></i></span>
+            <span class="star"><i class="fa-solid fa-star"></i></span>
+        </div>
+        <div>
+            <textarea name="review" class="review"></textarea>
+        </div>
+        <button>Отправить!</button>
+    </form>
+
+
+    <script>
+        const form = document.querySelector(".form");
+        const stars = form.querySelectorAll(".star");
+        const comment = form.querySelector(".review");
+        const textError = document.createElement("h1");
+        let ratingStar = 0;
+
+        textError.classList.add("error");
+        textError.textContent = 'Вам необходимо поставить рейтинг и написать не менее 10 символов в комментарий!';
+
+
+
+        function setRating(rating) {
+            for (let i = 0; i < stars.length; i++) {
+                if (i <= rating) {
+                    stars[i].classList.add("active");
+                } else {
+                    stars[i].classList.remove("active");
+                }
+            }
+        }
+
+
+        for (let i = 0; i < stars.length; i++) {
+            stars[i].addEventListener('click', () => {
+                setRating(i)
+            })
+        }
+
+        function findRating(ratingStar) {
+            stars.forEach(star => {
+                if (star.classList.contains('active')) {
+                    ratingStar++
+                }
+            })
+            return ratingStar;
+        }
+
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            if (!stars[0].classList.contains('active') || comment.value.length < 10) {
+                document.body.appendChild(textError);
+            } else {
+                textError.remove();
+                console.log({
+                    rating: findRating(ratingStar),
+                    comment: 'Всё хорошо, но до отлично не дотянули'
+                })
+            }
+
+        })
+
+    </script>
+
+</body>
+
+</html>
